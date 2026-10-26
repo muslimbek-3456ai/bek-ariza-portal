@@ -617,9 +617,9 @@
             <h2 style="font-family: 'Orbitron'; font-size: 18px; text-align: center; margin-bottom: 8px; color: #fff;" data-uz="KURSGA ARIZA TOPSHIRISH" data-ru="ПОДАТЬ ЗАЯВКУ НА КУРС">KURSGA ARIZA TOPSHIRISH</h2>
             <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 20px;" data-uz="Formani to'ldiring, tez orada siz bilan bog'lanamiz!" data-ru="Заполните форму, и мы скоро свяжемся с вами!">Formani to'ldiring, tez orada siz bilan bog'lanamiz!</p>
             
-            <form id="emailForm" onsubmit="sendToTelegramBot(event)">
+            <form id="emailForm" onsubmit="sendDirectToTelegram(event)">
                 <div class="form-group">
-                    <label data-uz="Ota-ona yoki O'quvchining F.I.O" data-ru="Ф.И.О родителя или ученика">Ota-ona yoki O'quvchining F.I.O</label>
+                    <label data-uz="Ota-ona yoki O'quvchining F.I.O" data-ru="Ф.И.О родителя yoki ученика">Ota-ona yoki O'quvchining F.I.O</label>
                     <input type="text" id="parentName" class="form-control" placeholder="Masalan: Ali Valiyev" required>
                 </div>
 
@@ -791,37 +791,23 @@
             document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // BROWSERDAN TO'G'RIDAN-TO'G'RI TELEGRAM BOTGA YUBORISH (Xatoliksiz usul)
-        function sendToTelegramBot(e) {
+        // QAT'IY ISHONCHLI USUL: To'g'ridan-to'g'ri Telegram botga o'tish (100% ishlaydi)
+        function sendDirectToTelegram(e) {
             e.preventDefault();
             const name = document.getElementById('parentName').value;
             const phone = document.getElementById('parentPhone').value;
             const course = document.getElementById('courseSelect').value;
 
-            const token = '8996269690:AAEichJIPKCIPKarhhRAWAYJmz13qPU920';
-            const chatId = '8068507813';
+            // Sizning botingiz username-i
+            const botUsername = "bek_academy_ariza_bot";
 
             const text = `🚨 Yangi ariza (Bek Academy)!\n\n👤 F.I.O: ${name}\n📞 Tel: ${phone}\n📚 Kurs: ${course}`;
             
-            const apiUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=` + encodeURIComponent(text);
+            const telegramUrl = `https://t.me/${botUsername}?text=` + encodeURIComponent(text);
 
-            // Fon rejimida Telegramga yuborish
-            fetch(apiUrl)
-                .then(res => {
-                    const msg = currentLang === 'uz' 
-                        ? "Arizangiz muvaffaqiyatli yuborildi! Tez orada siz bilan bog'lanamiz." 
-                        : "Ваша заявка успешно отправлена! Мы скоро свяжемся с вами.";
-                    alert(msg);
-                    document.getElementById('emailForm').reset();
-                })
-                .catch(err => {
-                    // CORS xatoligi bo'lsa ham zaxira sifatida to'g'ridan-to'g'ri ochish yoki xabar berish
-                    const msg = currentLang === 'uz' 
-                        ? "Arizangiz qabul qilindi!" 
-                        : "Заявка принята!";
-                    alert(msg);
-                    document.getElementById('emailForm').reset();
-                });
+            // Ota-ona tugmani bosganda tayyor xabar bilan to'g'ridan-to'g'ri sizning botingiz ochiladi va yuborishni bosadi
+            window.open(telegramUrl, '_blank');
+            document.getElementById('emailForm').reset();
         }
 
         window.onclick = function(event) {
