@@ -619,7 +619,7 @@
             
             <form id="emailForm" onsubmit="sendDirectToTelegram(event)">
                 <div class="form-group">
-                    <label data-uz="Ota-ona yoki O'quvchining F.I.O" data-ru="Ф.И.О родителя yoki ученика">Ota-ona yoki O'quvchining F.I.O</label>
+                    <label data-uz="Ota-ona yoki O'quvchining F.I.O" data-ru="Ф.И.О родителя или ученика">Ota-ona yoki O'quvchining F.I.O</label>
                     <input type="text" id="parentName" class="form-control" placeholder="Masalan: Ali Valiyev" required>
                 </div>
 
@@ -710,7 +710,7 @@
                 practice: {
                     title: "PRACTICE & PROJECTS",
                     slides: [
-                        "🏆 <b>Farzandingizga nima o'rgatiladi?</b><br><br>Olingan bilimlarni to'g'ridan-to'g'ri real loyihalar va amaliy topshiriqlarda qo'llash.",
+                        "🏆 <b>Farzandingizga nima o'rgatiladi?</b><br><br>Olingan bilimlarni to'g'ridan-to meva real loyihalar va amaliy topshiriqlarda qo'llash.",
                         "🤝 <b>Jamoaviy ish va yechimlar</b><br><br>Real muammolarga IT yechimlar topish va o'z loyihasini taqdim etish (Pitch) ko'nikmasi.",
                         "🎯 <b>Natija:</b><br><br>Murakkab loyihalarni mustaqil ravishda oxirigacha yetkazish tajribasi ortadi."
                     ]
@@ -791,25 +791,24 @@
             document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // QAT'IY ISHONCHLI USUL: To'g'ridan-to'g'ri Telegram botga o'tish (100% ishlaydi)
+        // TO'G'RIDAN-TO'G'RI TELEGRAMGA YUBORISH FUNKSIYASI
         function sendDirectToTelegram(e) {
             e.preventDefault();
             const name = document.getElementById('parentName').value;
             const phone = document.getElementById('parentPhone').value;
             const course = document.getElementById('courseSelect').value;
 
-            // Sizning botingiz username-i
-            const botUsername = "bek_academy_ariza_bot";
+            // Sizning Telegram akkauntingiz
+            const myUsername = "Bek_Academyy";
 
             const text = `🚨 Yangi ariza (Bek Academy)!\n\n👤 F.I.O: ${name}\n📞 Tel: ${phone}\n📚 Kurs: ${course}`;
             
-            const telegramUrl = `https://t.me/${botUsername}?text=` + encodeURIComponent(text);
+            const telegramUrl = `https://t.me/${myUsername}?text=` + encodeURIComponent(text);
 
-            // Ota-ona tugmani bosganda tayyor xabar bilan to'g'ridan-to'g'ri sizning botingiz ochiladi va yuborishni bosadi
             window.open(telegramUrl, '_blank');
             document.getElementById('emailForm').reset();
         }
-
+// const myUsername = "Bek_Academyy";
         window.onclick = function(event) {
             const modal = document.getElementById('infoModal');
             if (event.target == modal) {
