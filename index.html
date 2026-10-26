@@ -18,18 +18,13 @@
             --neon-shadow: 0 0 20px rgba(0, 242, 254, 0.35);
             --border-color: rgba(0, 242, 254, 0.2);
         }
-    * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Space Grotesk', sans-serif;
-    max-width: 100%; /* Mana shu qator elementlar ekrandan chiqib ketishining oldini oladi */
-}
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Space Grotesk', sans-serif;
+            max-width: 100%;
         }
 
         body {
@@ -463,6 +458,7 @@
             font-size: 13px;
         }
 
+        /* Mobil ekranlar uchun moslashtirish */
         @media (max-width: 768px) {
             .hero {
                 grid-template-columns: 1fr;
@@ -471,6 +467,10 @@
             }
             .hero-name {
                 font-size: 26px;
+            }
+            /* Telefonlarda menyu havolalarini yashirish, faqat til va ariza tugmasi qoladi */
+            .nav-links li:not(:has(.lang-switcher)):not(:has(.btn-apply-header)) {
+                display: none;
             }
             .nav-links {
                 gap: 8px;
@@ -716,7 +716,7 @@
                 practice: {
                     title: "PRACTICE & PROJECTS",
                     slides: [
-                        "🏆 <b>Farzandingizga nima o'rgatiladi?</b><br><br>Olingan bilimlarni to'g'ridan-to meva real loyihalar va amaliy topshiriqlarda qo'llash.",
+                        "🏆 <b>Farzandingizga nima o'rgatiladi?</b><br><br>Olingan bilimlarni to'g'ridan-to'g'ri real loyihalar va amaliy topshiriqlarda qo'llash.",
                         "🤝 <b>Jamoaviy ish va yechimlar</b><br><br>Real muammolarga IT yechimlar topish va o'z loyihasini taqdim etish (Pitch) ko'nikmasi.",
                         "🎯 <b>Natija:</b><br><br>Murakkab loyihalarni mustaqil ravishda oxirigacha yetkazish tajribasi ortadi."
                     ]
@@ -797,14 +797,12 @@
             document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // TO'G'RIDAN-TO'G'RI TELEGRAMGA YUBORISH FUNKSIYASI
         function sendDirectToTelegram(e) {
             e.preventDefault();
             const name = document.getElementById('parentName').value;
             const phone = document.getElementById('parentPhone').value;
             const course = document.getElementById('courseSelect').value;
 
-            // Sizning Telegram akkauntingiz
             const myUsername = "Bek_Academyy";
 
             const text = `🚨 Yangi ariza (Bek Academy)!\n\n👤 F.I.O: ${name}\n📞 Tel: ${phone}\n📚 Kurs: ${course}`;
@@ -814,7 +812,7 @@
             window.open(telegramUrl, '_blank');
             document.getElementById('emailForm').reset();
         }
-// const myUsername = "Bek_Academyy";
+
         window.onclick = function(event) {
             const modal = document.getElementById('infoModal');
             if (event.target == modal) {
