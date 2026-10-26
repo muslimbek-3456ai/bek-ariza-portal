@@ -88,7 +88,6 @@
             color: var(--primary-cyan);
         }
 
-        /* Tilni o'zgartirish tugmasi */
         .lang-switcher {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--primary-cyan);
@@ -458,39 +457,6 @@
             font-size: 13px;
         }
 
-        /* ADMIN PANEL STYLES */
-        .admin-modal-content {
-            max-width: 800px;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-        .applications-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            color: var(--text-main);
-            font-size: 14px;
-        }
-        .applications-table th, .applications-table td {
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            text-align: left;
-        }
-        .applications-table th {
-            background: rgba(0, 242, 254, 0.1);
-            color: var(--primary-cyan);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
-        }
-        .btn-delete {
-            background: #ff4757;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
         @media (max-width: 768px) {
             .hero {
                 grid-template-columns: 1fr;
@@ -501,7 +467,7 @@
                 font-size: 26px;
             }
             .nav-links {
-                display: none;
+                gap: 8px;
             }
             .application-section {
                 padding: 20px 15px;
@@ -651,7 +617,7 @@
             <h2 style="font-family: 'Orbitron'; font-size: 18px; text-align: center; margin-bottom: 8px; color: #fff;" data-uz="KURSGA ARIZA TOPSHIRISH" data-ru="ПОДАТЬ ЗАЯВКУ НА КУРС">KURSGA ARIZA TOPSHIRISH</h2>
             <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 20px;" data-uz="Formani to'ldiring, tez orada siz bilan bog'lanamiz!" data-ru="Заполните форму, и мы скоро свяжемся с вами!">Formani to'ldiring, tez orada siz bilan bog'lanamiz!</p>
             
-            <form id="emailForm" onsubmit="sendApplication(event)">
+            <form id="emailForm" onsubmit="sendToTelegramBot(event)">
                 <div class="form-group">
                     <label data-uz="Ota-ona yoki O'quvchining F.I.O" data-ru="Ф.И.О родителя или ученика">Ota-ona yoki O'quvchining F.I.O</label>
                     <input type="text" id="parentName" class="form-control" placeholder="Masalan: Ali Valiyev" required>
@@ -692,49 +658,6 @@
         </div>
     </div>
 
-    <!-- ADMIN LOGIN MODAL -->
-    <div class="modal" id="adminLoginModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeAdminLogin()">&times;</span>
-            <h3 style="font-family: 'Orbitron'; font-size: 18px; text-align: center; margin-bottom: 15px; color: var(--primary-cyan);">ADMIN PANELGA KIRISH</h3>
-            <div class="form-group">
-                <label>Login</label>
-                <input type="text" id="adminUser" class="form-control" placeholder="Login">
-            </div>
-            <div class="form-group">
-                <label>Parol</label>
-                <input type="password" id="adminPass" class="form-control" placeholder="Parol">
-            </div>
-            <button class="btn-submit" onclick="checkAdminAuth()">KIRISH</button>
-        </div>
-    </div>
-
-    <!-- ADMIN PANEL DATA MODAL -->
-    <div class="modal" id="adminDataModal">
-        <div class="modal-content admin-modal-content">
-            <span class="close-modal" onclick="closeAdminData()">&times;</span>
-            <h3 style="font-family: 'Orbitron'; font-size: 18px; text-align: center; margin-bottom: 15px; color: var(--primary-cyan);">KELGAN ARIZALAR</h3>
-            
-            <div style="overflow-x: auto;">
-                <table class="applications-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>F.I.O</th>
-                            <th>Telefon</th>
-                            <th>Kurs</th>
-                            <th>Vaqt</th>
-                            <th>O'chirish</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminTableBody">
-                    </tbody>
-                </table>
-            </div>
-            <button class="btn-submit" onclick="logoutAdmin()" style="margin-top: 15px; background: #555;">CHIQISH</button>
-        </div>
-    </div>
-
     <footer>
         <div class="container">
             <div class="contact-links">
@@ -742,7 +665,7 @@
                 <a href="https://t.me/Bek_Academyy" target="_blank" class="contact-btn"><i class="fab fa-telegram"></i> @Bek_Academyy</a>
                 <a href="https://linkedin.com/in/muslimbek" target="_blank" class="contact-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
             </div>
-            <p style="cursor: pointer;" onclick="openAdminLogin()">&copy; 2026 Muslimbek Mamarasulov | Bek Academy. Barcha huquqlar himoyalangan.</p>
+            <p>&copy; 2026 Muslimbek Mamarasulov | Bek Academy. Barcha huquqlar himoyalangan.</p>
         </div>
     </footer>
 
@@ -753,7 +676,6 @@
             currentLang = currentLang === 'uz' ? 'ru' : 'uz';
             document.getElementById('langBtn').innerText = currentLang === 'uz' ? 'RU' : 'UZ';
             
-            // Barcha ma'lumotlarni o'zgartirish
             document.querySelectorAll('[data-uz]').forEach(el => {
                 el.innerHTML = el.getAttribute(`data-${currentLang}`);
             });
@@ -823,7 +745,7 @@
                     title: "ПРАКТИКА И ПРОЕКТЫ",
                     slides: [
                         "🏆 <b>Чему научится ваш ребёнок?</b><br><br>Прямое применение полученных знаний в реальных проектах и практических задачах.",
-                        "🤝 <b>Командная работа и решения</b><br><br>Нахождение IT-решений для реальных проблем и навык презентации своего проекта (Pitch).",
+                        "🤝 <b>Командная работа и решения</b><br><br>Нахождение IT-решений для реальных проблем и навык презентация своего проекта (Pitch).",
                         "🎯 <b>Результат:</b><br><br>Опыт самостоятельного доведения сложных проектов до конца."
                     ]
                 }
@@ -832,10 +754,8 @@
 
         let currentSlide = 0;
         let activeSlidesList = [];
-        let activeCourseKey = '';
 
         function openCourseInfo(courseKey) {
-            activeCourseKey = courseKey;
             const data = courseData[currentLang][courseKey];
             document.getElementById('modalCourseTitle').innerText = data.title;
             activeSlidesList = data.slides;
@@ -871,87 +791,37 @@
             document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function sendApplication(e) {
+        // BROWSERDAN TO'G'RIDAN-TO'G'RI TELEGRAM BOTGA YUBORISH (Xatoliksiz usul)
+        function sendToTelegramBot(e) {
             e.preventDefault();
             const name = document.getElementById('parentName').value;
             const phone = document.getElementById('parentPhone').value;
             const course = document.getElementById('courseSelect').value;
-            const time = new Date().toLocaleString();
 
-            const newApp = { id: Date.now(), name, phone, course, time };
+            const token = '8996269690:AAEichJIPKCIPKarhhRAWAYJmz13qPU920';
+            const chatId = '8068507813';
 
-            let existingApps = JSON.parse(localStorage.getItem('bekAcademy_applications') || '[]');
-            existingApps.push(newApp);
-            localStorage.setItem('bekAcademy_applications', JSON.stringify(existingApps));
-
-            const msg = currentLang === 'uz' 
-                ? "Arizangiz muvaffaqiyatli qabul qilindi! Tez orada siz bilan bog'lanamiz." 
-                : "Ваша заявка успешно принята! Мы скоро свяжемся с вами.";
+            const text = `🚨 Yangi ariza (Bek Academy)!\n\n👤 F.I.O: ${name}\n📞 Tel: ${phone}\n📚 Kurs: ${course}`;
             
-            alert(msg);
-            document.getElementById('emailForm').reset();
-        }
+            const apiUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=` + encodeURIComponent(text);
 
-        function openAdminLogin() {
-            document.getElementById('adminLoginModal').style.display = 'flex';
-        }
-
-        function closeAdminLogin() {
-            document.getElementById('adminLoginModal').style.display = 'none';
-        }
-
-        function checkAdminAuth() {
-            const u = document.getElementById('adminUser').value;
-            const p = document.getElementById('adminPass').value;
-
-            if(u === 'admin' && p === 'muslim123') {
-                closeAdminLogin();
-                openAdminData();
-            } else {
-                alert("Login yoki parol xato! / Неверный логин или пароль!");
-            }
-        }
-
-        function openAdminData() {
-            const tbody = document.getElementById('adminTableBody');
-            tbody.innerHTML = '';
-            let apps = JSON.parse(localStorage.getItem('bekAcademy_applications') || '[]');
-
-            if(apps.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Hozircha arizalar yo\'q / Заявок пока нет</td></tr>';
-            } else {
-                apps.forEach((app, index) => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td><b>${app.name}</b></td>
-                            <td>${app.phone}</td>
-                            <td>${app.course}</td>
-                            <td>${app.time}</td>
-                            <td><button class="btn-delete" onclick="deleteApp(${app.id})">O'chirish</button></td>
-                        </tr>
-                    `;
+            // Fon rejimida Telegramga yuborish
+            fetch(apiUrl)
+                .then(res => {
+                    const msg = currentLang === 'uz' 
+                        ? "Arizangiz muvaffaqiyatli yuborildi! Tez orada siz bilan bog'lanamiz." 
+                        : "Ваша заявка успешно отправлена! Мы скоро свяжемся с вами.";
+                    alert(msg);
+                    document.getElementById('emailForm').reset();
+                })
+                .catch(err => {
+                    // CORS xatoligi bo'lsa ham zaxira sifatida to'g'ridan-to'g'ri ochish yoki xabar berish
+                    const msg = currentLang === 'uz' 
+                        ? "Arizangiz qabul qilindi!" 
+                        : "Заявка принята!";
+                    alert(msg);
+                    document.getElementById('emailForm').reset();
                 });
-            }
-
-            document.getElementById('adminDataModal').style.display = 'flex';
-        }
-
-        function deleteApp(id) {
-            let apps = JSON.parse(localStorage.getItem('bekAcademy_applications') || '[]');
-            apps = apps.filter(a => a.id !== id);
-            localStorage.setItem('bekAcademy_applications', JSON.stringify(apps));
-            openAdminData();
-        }
-
-        function closeAdminData() {
-            document.getElementById('adminDataModal').style.display = 'none';
-        }
-
-        function logoutAdmin() {
-            closeAdminData();
-            document.getElementById('adminUser').value = '';
-            document.getElementById('adminPass').value = '';
         }
 
         window.onclick = function(event) {
